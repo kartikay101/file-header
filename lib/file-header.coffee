@@ -1,8 +1,8 @@
 # @Author: Guan Gui <guiguan>
 # @Date:   2016-02-13T14:15:43+11:00
 # @Email:  root@guiguan.net
-# @Last modified by:   guiguan
-# @Last modified time: 2018-02-14T11:28:22+11:00
+# @Last modified by:   kartikay101
+# @Last modified time: 2018-07-29T17:09:35+05:30
 
 
 
@@ -126,7 +126,12 @@ module.exports = FileHeader =
       # if it is the first time this plugin is installed, we try to setup username
       # for the user
       atom.config.set('file-header.username', process.env.USER ? '')
-
+      #if the first if statement fails, it somehow does not initialize the "notFirstTime" property and
+      #the next serialization operation would not save it
+      #causing the First Time setup to trigger again and it will reset the fileheader to the default username
+    else
+      @state=state
+      @state.notFirstTime=true
     # Events subscribed to in atom's system can be easily cleaned up
     # with a CompositeDisposable
     @subscriptions = new CompositeDisposable
