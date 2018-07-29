@@ -2,7 +2,7 @@
 # @Date:   2016-02-13T14:15:43+11:00
 # @Email:  root@guiguan.net
 # @Last modified by:   kartikay101
-# @Last modified time: 2018-07-29T17:09:35+05:30
+# @Last modified time: 2018-07-29T17:46:19+05:30
 
 
 
@@ -121,14 +121,16 @@ module.exports = FileHeader =
 
   activate: (state) ->
     if !state.notFirstTime
-      @state = state
-      @state.notFirstTime = true
+      # added the property notFirstTime to the previous aquired state
+      # instead of the currrent state and then set it to the current state
+      state.notFirstTime = true
+      @state=state
       # if it is the first time this plugin is installed, we try to setup username
       # for the user
       atom.config.set('file-header.username', process.env.USER ? '')
-      #if the first if statement fails, it somehow does not initialize the "notFirstTime" property and
-      #the next serialization operation would not save it
-      #causing the First Time setup to trigger again and it will reset the fileheader to the default username
+      # if the first if statement fails, it somehow does not initialize the "notFirstTime" property and
+      # the next serialization operation would not save it
+      # causing the First Time setup to trigger again and it will reset the fileheader to the default username
     else
       @state=state
       @state.notFirstTime=true
